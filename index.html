@@ -239,56 +239,68 @@
       var musicBtn = document.getElementById("musicToggle");
       var musicStarted = false;  // Is muziek ooit gestart?
       var userPaused = false;    // Heeft gebruiker handmatig gepauzeerd?
-      var fadeInterval = null;
-
-      function fadeIn() {
-        music.volume = 0;
-        clearInterval(fadeInterval);
-        fadeInterval = setInterval(function(){
-          if(music.volume < 0.9) {
-            music.volume = Math.min(1, music.volume + 0.1);
-          } else {
-            music.volume = 1;
-            clearInterval(fadeInterval);
-          }
-        }, 100);
-      }
-
-      function fadeOut(callback) {
-        clearInterval(fadeInterval);
-        fadeInterval = setInterval(function(){
-          if(music.volume > 0.1) {
-            music.volume = Math.max(0, music.volume - 0.1);
-          } else {
-            music.volume = 0;
-            music.pause();
-            clearInterval(fadeInterval);
-            if(callback) callback();
-          }
-        }, 100);
-      }
+      var isTransitioning = false;  // Voorkom dubbele acties
 
       function playMusic() {
-        music.play().then(function() {
-          fadeIn();
-          musicBtn.textContent = "🔊";
-          musicBtn.classList.add("playing");
-          musicStarted = true;
-          userPaused = false;
-        }).catch(function(e) {
-          console.log("Kon muziek niet starten:", e.message);
-        });
+        if(isTransitioning) return;
+        isTransitioning = true;
+        
+        // Start met laag volume
+        music.volume = 0.1;
+        
+        var playPromise = music.play();
+        
+        if(playPromise !== undefined) {
+          playPromise.then(function() {
+            // Fade in na succesvolle start
+            var vol = 0.1;
+            var fadeIn = setInterval(function() {
+              vol += 0.1;
+              if(vol >= 1) {
+                music.volume = 1;
+                clearInterval(fadeIn);
+              } else {
+                music.volume = vol;
+              }
+            }, 100);
+            
+            musicBtn.textContent = "🔊";
+            musicBtn.classList.add("playing");
+            musicStarted = true;
+            userPaused = false;
+            isTransitioning = false;
+          }).catch(function(e) {
+            console.log("Muziek wacht op gebruikersinteractie");
+            isTransitioning = false;
+          });
+        }
       }
 
       function pauseMusic() {
-        fadeOut(function() {
-          musicBtn.textContent = "🔇";
-          musicBtn.classList.remove("playing");
-        });
+        if(isTransitioning) return;
+        isTransitioning = true;
         userPaused = true;
+        
+        // Fade out
+        var vol = music.volume;
+        var fadeOut = setInterval(function() {
+          vol -= 0.1;
+          if(vol <= 0) {
+            music.volume = 0;
+            music.pause();
+            clearInterval(fadeOut);
+            musicBtn.textContent = "🔇";
+            musicBtn.classList.remove("playing");
+            isTransitioning = false;
+          } else {
+            music.volume = vol;
+          }
+        }, 50);
       }
 
       function toggleMusic() {
+        if(isTransitioning) return;
+        
         if(music.paused) {
           playMusic();
         } else {
