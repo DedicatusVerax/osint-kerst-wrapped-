@@ -234,73 +234,66 @@
       var touchStartX = 0;
       var touchEndX = 0;
       
-      // === MUZIEK LOGICA ===
+      // === MUZIEK LOGICA (simpel & betrouwbaar) ===
       var music = document.getElementById("bgMusic");
       var musicBtn = document.getElementById("musicToggle");
-      var musicStarted = false;  // Is muziek ooit gestart?
-      var userPaused = false;    // Heeft gebruiker handmatig gepauzeerd?
-      var isTransitioning = false;  // Voorkom dubbele acties
+      var musicStarted = false;
+      var userPaused = false;
+      var playPromise = null;
 
       function playMusic() {
-        if(isTransitioning) return;
-        isTransitioning = true;
-        
-        // Start met laag volume
-        music.volume = 0.1;
-        
-        var playPromise = music.play();
+        // Wacht tot eventuele vorige actie klaar is
+        if(playPromise) {
+          playPromise.then(function() {
+            startPlaying();
+          }).catch(function() {
+            startPlaying();
+          });
+        } else {
+          startPlaying();
+        }
+      }
+      
+      function startPlaying() {
+        music.volume = 0.7;
+        playPromise = music.play();
         
         if(playPromise !== undefined) {
           playPromise.then(function() {
-            // Fade in na succesvolle start
-            var vol = 0.1;
-            var fadeIn = setInterval(function() {
-              vol += 0.1;
-              if(vol >= 1) {
-                music.volume = 1;
-                clearInterval(fadeIn);
-              } else {
-                music.volume = vol;
-              }
-            }, 100);
-            
             musicBtn.textContent = "🔊";
             musicBtn.classList.add("playing");
             musicStarted = true;
             userPaused = false;
-            isTransitioning = false;
+            playPromise = null;
           }).catch(function(e) {
-            console.log("Muziek wacht op gebruikersinteractie");
-            isTransitioning = false;
+            // Stille error - wacht op gebruikersinteractie
+            playPromise = null;
           });
         }
       }
 
       function pauseMusic() {
-        if(isTransitioning) return;
-        isTransitioning = true;
+        // Wacht tot play klaar is voordat we pauzeren
+        if(playPromise) {
+          playPromise.then(function() {
+            doPause();
+          }).catch(function() {
+            doPause();
+          });
+        } else {
+          doPause();
+        }
+      }
+      
+      function doPause() {
+        music.pause();
+        musicBtn.textContent = "🔇";
+        musicBtn.classList.remove("playing");
         userPaused = true;
-        
-        // Fade out
-        var vol = music.volume;
-        var fadeOut = setInterval(function() {
-          vol -= 0.1;
-          if(vol <= 0) {
-            music.volume = 0;
-            music.pause();
-            clearInterval(fadeOut);
-            musicBtn.textContent = "🔇";
-            musicBtn.classList.remove("playing");
-            isTransitioning = false;
-          } else {
-            music.volume = vol;
-          }
-        }, 50);
+        playPromise = null;
       }
 
       function toggleMusic() {
-        if(isTransitioning) return;
-        
         if(music.paused) {
           playMusic();
         } else {
@@ -349,9 +342,12 @@
       }
       
       function next() {
-        // Start muziek bij eerste interactie (tenzij gebruiker het heeft uitgezet)
+        // Start muziek alleen bij EERSTE interactie
         if(!musicStarted && !userPaused) {
-          playMusic();
+          musicStarted = true;  // Zet dit EERST zodat we niet opnieuw proberen
+          setTimeout(function() {
+            playMusic();
+          }, 100);
         }
         
         if(current < total - 1) {
