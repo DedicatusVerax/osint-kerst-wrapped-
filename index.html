@@ -20,8 +20,8 @@
     .bg4{background:linear-gradient(to bottom right,#0f172a,#831843,#0f172a)}
     .bg5{background:linear-gradient(to bottom right,#0f172a,#164e63,#0f172a)}
 
-    /* Aangepast: Plaatje is nu een extern bestand, geen base64 meer */
-    .owl{width:8rem;height:8rem;margin-bottom:1rem;object-fit: contain; border-radius: 1rem;}
+    /* Uil instellingen - Aangepast voor transparante PNG */
+    .owl{width:10rem;height:10rem;margin-bottom:1rem;object-fit: contain; border-radius: 0; background: transparent;}
     .owl.float{animation:float 3s ease-in-out infinite}
     
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
@@ -35,7 +35,7 @@
     .big-number{font-size:8rem;font-weight:900;color:#fff}
     .label{color:#a5b4fc;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
     
-    /* Nieuwe stijl voor Slide 1 (OSINT 7) */
+    /* OSINT 7 Slide */
     .avatars{display:flex;gap:.5rem;margin:1.5rem 0; flex-wrap: wrap; justify-content: center; max-width: 18rem;}
     .avatar{width:3.5rem;height:3.5rem;border-radius:50%;background:rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid #818cf8; animation: scan 3s infinite;}
     
@@ -50,10 +50,13 @@
     .card-sub-amber{color:rgba(252,211,77,.6)}
     .card-sub-pink{color:rgba(244,114,182,.6)}
     .card-sub-cyan{color:rgba(103,232,249,.8)}
-    .case-img{width:100%;height:8rem;object-fit:cover;border-radius:.5rem;opacity:.8;border:1px solid rgba(245,158,11,.2)}
-    .case-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);border-radius:.5rem}
-    .case-loc{position:absolute;bottom:.5rem;left:.5rem;color:#fff;font-size:.7rem;font-weight:700}
+    
+    /* Aangepast voor de casus foto */
+    .case-img{width:100%;height:12rem;object-fit:cover;border-radius:.5rem;opacity:.9;border:1px solid rgba(245,158,11,.2)}
+    .case-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);border-radius:.5rem}
+    .case-loc{position:absolute;bottom:.5rem;left:.5rem;color:#fff;font-size:.8rem;font-weight:700; text-shadow: 0 2px 4px rgba(0,0,0,0.8);}
     .case-wrap{position:relative;margin-bottom:.75rem;border-radius:.5rem;overflow:hidden}
+    
     .rank{font-size:1.25rem;font-weight:900;color:#ec4899;width:2rem}
     .rank-2{color:rgba(236,72,153,.8)}
     .rank-3{color:rgba(236,72,153,.6)}
@@ -83,7 +86,7 @@
     .info{text-align:center;margin-top:1rem;color:#6b7280;font-size:.875rem}
     .highlight-card{background:rgba(255,255,255,.1)}
     
-    /* Nieuw: Muziek knop */
+    /* Muziek knop */
     .music-btn {position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; border: none; cursor: pointer; z-index: 10; opacity: 0.5;}
     .music-btn.playing {opacity: 1; animation: pulse 1s infinite;}
   </style>
@@ -104,7 +107,7 @@
         <div class="year">2025</div>
         <p class="subtitle">Jouw jaar in data.</p>
         <p style="color:rgba(147,197,253,.6);font-size:.875rem;margin-top:.5rem">(Of eigenlijk: ons jaar in andermans data.)</p>
-        <div class="hint">Tap om te starten (en de muziek te starten) →</div>
+        <div class="hint">Tap om te starten 🎶</div>
       </div>
       
       <div class="slide bg1" data-slide="1">
@@ -125,7 +128,7 @@
       </div>
       
       <div class="slide bg2" data-slide="2">
-        <p class="label" style="color:#6ee7b7">2025 was groots</p>
+        <p class="label" style="color:#6ee7b7">2025 was groot</p>
         <h2 style="font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:1.5rem">Jullie highlights</h2>
         <div class="card"><div class="emoji">🌍</div><div><p class="card-title">NAVO TOP 2025</p><p class="card-sub">De wereld keek toe. Wij keken mee.</p></div></div>
         <div class="card"><div class="emoji">🕯️</div><div><p class="card-title">VOOR LISA</p><p class="card-sub">Sommige zaken vergeet je nooit.</p></div></div>
@@ -141,9 +144,9 @@
             <div style="text-align:left"><p class="card-title">Instagram</p><p class="card-sub-amber">Eén foto. Eén detail. Eén treffer.</p></div>
           </div>
           <div class="case-wrap">
-            <img src="casus.jpg" class="case-img" alt="Casus foto" onerror="this.style.display='none';this.parentNode.innerHTML='<div style=\'width:100%;height:8rem;background:#333;border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#666\'>Plaats casus.jpg</div>'">
+            <img src="casus.jpg" class="case-img" alt="Casus foto" onerror="this.style.display='none';this.parentNode.innerHTML='<div style=\'width:100%;height:8rem;background:#333;border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#666;font-size:0.8rem;text-align:center;padding:1rem\'>Foto niet geladen. Check bestandsnaam.</div>'">
             <div class="case-overlay"></div>
-            <p class="case-loc">📍 Amsterdam</p>
+            <p class="case-loc">📍 RED LIGHT AREA</p>
           </div>
           <div style="text-align:center"><div style="font-size:1.5rem">🎯</div><p class="card-title">Van post naar aanhouding</p></div>
         </div>
@@ -151,7 +154,7 @@
       </div>
       
       <div class="slide bg4" data-slide="4">
-        <p class="label" style="color:#f9a8d4">Jullie waren het meest te vinden op</p>
+        <p class="label" style="color:#f9a8d4">Wij waren het meest te vinden op</p>
         <h2 style="font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:1.5rem">TOP PLATFORMS</h2>
         <div class="card card-pink highlight-card"><div class="rank">#1</div><div class="platform-icon ig-icon">📸</div><div style="text-align:left"><p class="card-title">Instagram</p><p class="card-sub-pink">"Waar ego's zichzelf verraden"</p></div></div>
         <div class="card card-pink"><div class="rank rank-2">#2</div><div class="platform-icon x-icon">X</div><div style="text-align:left"><p class="card-title">X / Twitter</p><p class="card-sub-pink">"Chaos, maar bruikbare chaos"</p></div></div>
@@ -176,7 +179,7 @@
       </div>
       
       <div class="slide bg6" data-slide="6">
-        <img src="plaatje.jpg" class="owl" style="width:5rem;height:5rem" alt="OSINT Logo">
+        <img src="Uil transparant.png" class="owl" style="width:5rem;height:5rem" alt="OSINT Logo">
         <p class="label" style="color:rgba(147,197,253,.6)">Politie Amsterdam</p>
         <h1 style="font-size:1.75rem;font-weight:900;color:#fff;margin-bottom:.5rem">OSINT TEAM</h1>
         <div class="year" style="font-size:2rem;margin-bottom:1rem">WRAPPED 2025</div>
@@ -213,14 +216,13 @@
       var nextBtn=document.getElementById("next");
       var touchStartX=0,touchEndX=0;
       
-      // Nieuw: Muziek logica
+      // Music logic
       var music = document.getElementById("bgMusic");
       var musicBtn = document.getElementById("musicToggle");
       var musicStarted = false;
 
       function toggleMusic() {
         if(music.paused){
-          // Probeer af te spelen
           music.play().then(() => {
             musicBtn.textContent = "🔊"; // Icoon luidspreker aan
             musicBtn.classList.add("playing");
@@ -237,7 +239,7 @@
 
       // Knopje rechtsboven
       musicBtn.onclick = function(e){
-        e.stopPropagation(); // Voorkom dat we ook naar de volgende slide gaan
+        e.stopPropagation();
         toggleMusic();
       };
 
@@ -260,8 +262,9 @@
       }
       
       function goTo(n){if(n>=0&&n<total){current=n;update()}}
+      
       function next(){
-        // Nieuw: Start muziek bij de eerste keer klikken/swipen
+        // Start muziek bij de eerste keer klikken/swipen
         if(!musicStarted) { toggleMusic(); } 
         
         if(current<total-1){current++;update()}
