@@ -9,8 +9,8 @@
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#030712;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;overflow:hidden}
     .phone{background:#000;border-radius:2rem;padding:0.5rem;max-width:24rem;width:100%;box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
     .screen{height:600px;border-radius:1.5rem;overflow:hidden;position:relative;cursor:pointer}
-    .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;opacity:0;transition:opacity .5s}
-    .slide.active{opacity:1}
+    .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;opacity:0;transition:opacity .5s;pointer-events:none}
+    .slide.active{opacity:1;pointer-events:auto}
     
     /* Achtergrond Gradients */
     .bg0,.bg6{background:linear-gradient(to bottom right,#0f172a,#1e3a5f,#0f172a)}
@@ -20,13 +20,14 @@
     .bg4{background:linear-gradient(to bottom right,#0f172a,#831843,#0f172a)}
     .bg5{background:linear-gradient(to bottom right,#0f172a,#164e63,#0f172a)}
 
-    /* Uil instellingen - Aangepast voor transparante PNG */
-    .owl{width:10rem;height:10rem;margin-bottom:1rem;object-fit: contain; border-radius: 0; background: transparent;}
+    /* Uil instellingen */
+    .owl{width:10rem;height:10rem;margin-bottom:1rem;object-fit:contain;border-radius:0;background:transparent}
     .owl.float{animation:float 3s ease-in-out infinite}
     
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
     @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
-    @keyframes scan{0%{border-color: #818cf8} 50%{border-color: #fff} 100%{border-color: #818cf8}}
+    @keyframes scan{0%{border-color:#818cf8}50%{border-color:#fff}100%{border-color:#818cf8}}
+    @keyframes glow{0%,100%{box-shadow:0 0 5px rgba(251,191,36,.3)}50%{box-shadow:0 0 20px rgba(251,191,36,.6)}}
 
     .title{font-size:2rem;font-weight:900;color:#fff;margin-bottom:1rem}
     .year{font-size:4rem;font-weight:900;background:linear-gradient(to right,#fbbf24,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -36,11 +37,13 @@
     .label{color:#a5b4fc;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
     
     /* OSINT 7 Slide */
-    .avatars{display:flex;gap:.5rem;margin:1.5rem 0; flex-wrap: wrap; justify-content: center; max-width: 18rem;}
-    .avatar{width:3.5rem;height:3.5rem;border-radius:50%;background:rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid #818cf8; animation: scan 3s infinite;}
+    .avatars{display:flex;gap:.5rem;margin:1.5rem 0;flex-wrap:wrap;justify-content:center;max-width:18rem}
+    .avatar{width:3.5rem;height:3.5rem;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:2px solid #818cf8;animation:scan 3s infinite;transition:transform .2s}
+    .avatar:hover{transform:scale(1.1)}
     
     .team-name{font-size:1.5rem;font-weight:900;background:linear-gradient(to right,#a5b4fc,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .card{background:rgba(255,255,255,.05);border-radius:.75rem;padding:1rem;border:1px solid rgba(16,185,129,.2);text-align:left;display:flex;align-items:center;gap:1rem;margin-bottom:.75rem;width:100%;max-width:20rem}
+    .card{background:rgba(255,255,255,.05);border-radius:.75rem;padding:1rem;border:1px solid rgba(16,185,129,.2);text-align:left;display:flex;align-items:center;gap:1rem;margin-bottom:.75rem;width:100%;max-width:20rem;transition:transform .2s,background .2s}
+    .card:hover{transform:translateX(5px);background:rgba(255,255,255,.08)}
     .card-amber{border-color:rgba(245,158,11,.3)}
     .card-pink{border-color:rgba(236,72,153,.2)}
     .card-cyan{border-color:rgba(6,182,212,.3)}
@@ -51,10 +54,10 @@
     .card-sub-pink{color:rgba(244,114,182,.6)}
     .card-sub-cyan{color:rgba(103,232,249,.8)}
     
-    /* Aangepast voor de casus foto */
+    /* Casus foto */
     .case-img{width:100%;height:12rem;object-fit:cover;border-radius:.5rem;opacity:.9;border:1px solid rgba(245,158,11,.2)}
     .case-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);border-radius:.5rem}
-    .case-loc{position:absolute;bottom:.5rem;left:.5rem;color:#fff;font-size:.8rem;font-weight:700; text-shadow: 0 2px 4px rgba(0,0,0,0.8);}
+    .case-loc{position:absolute;bottom:.5rem;left:.5rem;color:#fff;font-size:.8rem;font-weight:700;text-shadow:0 2px 4px rgba(0,0,0,0.8)}
     .case-wrap{position:relative;margin-bottom:.75rem;border-radius:.5rem;overflow:hidden}
     
     .rank{font-size:1.25rem;font-weight:900;color:#ec4899;width:2rem}
@@ -62,9 +65,9 @@
     .rank-3{color:rgba(236,72,153,.6)}
     .platform-icon{width:3rem;height:3rem;border-radius:.75rem;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
     .ig-icon{background:linear-gradient(to bottom right,#a855f7,#ec4899,#f97316)}
-    .x-icon{background:#000;color:#fff;font-weight:700}
+    .x-icon{background:#000;color:#fff;font-weight:700;border:1px solid #333}
     .tt-icon{background:linear-gradient(to bottom right,#22d3ee,#ec4899,#ef4444)}
-    .terminal{background:rgba(30,41,59,.8);border-radius:.75rem;padding:1rem;font-family:monospace;text-align:left;max-width:20rem;border:1px solid rgba(6,182,212,.3);margin-bottom:1rem}
+    .terminal{background:rgba(30,41,59,.8);border-radius:.75rem;padding:1rem;font-family:'Courier New',monospace;text-align:left;max-width:20rem;border:1px solid rgba(6,182,212,.3);margin-bottom:1rem}
     .term-line{color:#22d3ee;font-size:.75rem;margin-bottom:.25rem}
     .term-error{color:#f87171;font-weight:700;font-size:.75rem;margin-top:.5rem}
     .quote{color:#fff;font-size:1.1rem;font-weight:900;margin-bottom:.25rem}
@@ -75,11 +78,12 @@
     .xmas{display:flex;align-items:center;gap:.5rem;margin-top:1rem}
     .xmas-text{color:rgba(191,219,254,.6);font-size:.875rem}
     .progress{position:absolute;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.1)}
-    .progress-bar{height:100%;background:rgba(255,255,255,.5);transition:width .3s}
+    .progress-bar{height:100%;background:linear-gradient(to right,#fbbf24,#f97316);transition:width .3s}
     .dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.375rem}
     .dot{width:.5rem;height:.5rem;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;padding:0;transition:all .3s}
+    .dot:hover{background:rgba(255,255,255,.5)}
     .dot.active{background:#fff;width:1.5rem}
-    .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
     .nav-btn:hover{background:rgba(255,255,255,.2);color:#fff}
     .nav-prev{left:.5rem}
     .nav-next{right:.5rem}
@@ -87,22 +91,28 @@
     .highlight-card{background:rgba(255,255,255,.1)}
     
     /* Muziek knop */
-    .music-btn {position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; border: none; cursor: pointer; z-index: 10; opacity: 0.5;}
-    .music-btn.playing {opacity: 1; animation: pulse 1s infinite;}
+    .music-btn{position:absolute;top:1rem;right:1rem;font-size:1.5rem;background:rgba(0,0,0,.3);border:none;cursor:pointer;z-index:10;opacity:0.6;width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .music-btn:hover{opacity:1;background:rgba(0,0,0,.5)}
+    .music-btn.playing{opacity:1;animation:glow 2s infinite}
+    
+    /* Fallback afbeelding */
+    .img-fallback{width:100%;height:8rem;background:#333;border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#666;font-size:0.8rem;text-align:center;padding:1rem}
   </style>
 </head>
 <body>
   
-  <audio id="bgMusic" loop>
-    <source src="kerst.mp3" type="audio/mp3">
+  <audio id="bgMusic" loop preload="auto">
+    <source src="kerst.mp3" type="audio/mpeg">
+    Je browser ondersteunt geen audio.
   </audio>
 
   <div class="phone">
     <div class="screen" id="screen">
-      <button id="musicToggle" class="music-btn">🔇</button>
+      <button id="musicToggle" class="music-btn" title="Muziek aan/uit">🔇</button>
 
+      <!-- Slide 0: Opening -->
       <div class="slide bg0 active" data-slide="0">
-        <img src="plaatje.jpg" class="owl float" alt="OSINT Logo">
+        <img src="plaatje.jpg" class="owl float" alt="OSINT Logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦉</text></svg>'">
         <h1 class="title">OSINT WRAPPED</h1>
         <div class="year">2025</div>
         <p class="subtitle">OSINT jaar in data.</p>
@@ -110,6 +120,7 @@
         <div class="hint">Tap om te starten 🎶</div>
       </div>
       
+      <!-- Slide 1: The Seven -->
       <div class="slide bg1" data-slide="1">
         <p class="label">Dit jaar werkten</p>
         <div class="big-number">7</div>
@@ -121,12 +132,13 @@
           <div class="avatar" title="Recherche">🔍</div>
           <div class="avatar" title="Tech/Data">📡</div>
           <div class="avatar" title="Financieel/Crypto">💸</div>
-          <div class="avatar" title="HUMINT/SocEng">🕵️‍♂️</div>
+          <div class="avatar" title="HUMINT/SocEng">🕵️</div>
         </div>
         <h2 class="team-name">THE OSINT SEVEN</h2>
         <p style="color:rgba(129,140,248,.6);font-size:.7rem;margin-top:1rem">7 Specialismen • 1 Missie</p>
       </div>
       
+      <!-- Slide 2: Highlights -->
       <div class="slide bg2" data-slide="2">
         <p class="label" style="color:#6ee7b7">2025 was groot</p>
         <h2 style="font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:1.5rem">Onze highlights</h2>
@@ -135,6 +147,7 @@
         <div class="card"><div class="emoji">🚩</div><div><p class="card-title">DEMONSTRATIES</p><p class="card-sub">Wanneer de straat spreekt, luisteren wij.</p></div></div>
       </div>
       
+      <!-- Slide 3: Snelste Hit -->
       <div class="slide bg3" data-slide="3">
         <div style="font-size:2rem;margin-bottom:.5rem">⚡</div>
         <p class="label" style="color:#fcd34d">Snelste hit van 2025</p>
@@ -144,7 +157,7 @@
             <div style="text-align:left"><p class="card-title">Instagram</p><p class="card-sub-amber">Eén foto. Eén detail. Eén treffer.</p></div>
           </div>
           <div class="case-wrap">
-            <img src="casus.jpg" class="case-img" alt="Casus foto" onerror="this.style.display='none';this.parentNode.innerHTML='<div style=\'width:100%;height:8rem;background:#333;border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#666;font-size:0.8rem;text-align:center;padding:1rem\'>Foto niet geladen. Check bestandsnaam.</div>'">
+            <img src="casus.jpg" class="case-img" alt="Casus foto" onerror="this.parentNode.innerHTML='<div class=img-fallback>📷 Plaats casus.jpg in dezelfde map</div>'">
             <div class="case-overlay"></div>
             <p class="case-loc">📍 RED LIGHT AREA</p>
           </div>
@@ -153,6 +166,7 @@
         <p style="color:rgba(252,211,77,.8);font-size:.75rem;font-style:italic">"Soms zit het antwoord in een pixel."</p>
       </div>
       
+      <!-- Slide 4: Top Platforms -->
       <div class="slide bg4" data-slide="4">
         <p class="label" style="color:#f9a8d4">Wij waren het meest te vinden op</p>
         <h2 style="font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:1.5rem">TOP PLATFORMS</h2>
@@ -161,6 +175,7 @@
         <div class="card card-pink"><div class="rank rank-3">#3</div><div class="platform-icon tt-icon">🎵</div><div style="text-align:left"><p class="card-title">TikTok</p><p class="card-sub-pink">"60 seconden, eindeloze intel"</p></div></div>
       </div>
       
+      <!-- Slide 5: AI Grap -->
       <div class="slide bg5" data-slide="5">
         <div style="font-size:3rem;margin-bottom:1rem">🤖</div>
         <div class="terminal">
@@ -178,8 +193,9 @@
         </div>
       </div>
       
+      <!-- Slide 6: Closing -->
       <div class="slide bg6" data-slide="6">
-        <img src="plaatje.jpg" class="owl" style="width:5rem;height:5rem" alt="OSINT Logo">
+        <img src="plaatje.jpg" class="owl" style="width:5rem;height:5rem" alt="OSINT Logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦉</text></svg>'">
         <p class="label" style="color:rgba(147,197,253,.6)">Politie Amsterdam</p>
         <h1 style="font-size:1.75rem;font-weight:900;color:#fff;margin-bottom:.5rem">OSINT TEAM</h1>
         <div class="year" style="font-size:2rem;margin-bottom:1rem">WRAPPED 2025</div>
@@ -206,87 +222,191 @@
   
   <script>
     (function(){
-      var current=0,total=7;
-      var screen=document.getElementById("screen");
-      var slides=document.querySelectorAll(".slide");
-      var progress=document.getElementById("progress");
-      var counter=document.getElementById("counter");
-      var dots=document.getElementById("dots");
-      var prevBtn=document.getElementById("prev");
-      var nextBtn=document.getElementById("next");
-      var touchStartX=0,touchEndX=0;
+      var current = 0;
+      var total = 7;
+      var screen = document.getElementById("screen");
+      var slides = document.querySelectorAll(".slide");
+      var progress = document.getElementById("progress");
+      var counter = document.getElementById("counter");
+      var dots = document.getElementById("dots");
+      var prevBtn = document.getElementById("prev");
+      var nextBtn = document.getElementById("next");
+      var touchStartX = 0;
+      var touchEndX = 0;
       
-      // Music logic
+      // === MUZIEK LOGICA ===
       var music = document.getElementById("bgMusic");
       var musicBtn = document.getElementById("musicToggle");
-      var musicStarted = false;
+      var musicStarted = false;  // Is muziek ooit gestart?
+      var userPaused = false;    // Heeft gebruiker handmatig gepauzeerd?
+      var fadeInterval = null;
+
+      function fadeIn() {
+        music.volume = 0;
+        clearInterval(fadeInterval);
+        fadeInterval = setInterval(function(){
+          if(music.volume < 0.9) {
+            music.volume = Math.min(1, music.volume + 0.1);
+          } else {
+            music.volume = 1;
+            clearInterval(fadeInterval);
+          }
+        }, 100);
+      }
+
+      function fadeOut(callback) {
+        clearInterval(fadeInterval);
+        fadeInterval = setInterval(function(){
+          if(music.volume > 0.1) {
+            music.volume = Math.max(0, music.volume - 0.1);
+          } else {
+            music.volume = 0;
+            music.pause();
+            clearInterval(fadeInterval);
+            if(callback) callback();
+          }
+        }, 100);
+      }
+
+      function playMusic() {
+        music.play().then(function() {
+          fadeIn();
+          musicBtn.textContent = "🔊";
+          musicBtn.classList.add("playing");
+          musicStarted = true;
+          userPaused = false;
+        }).catch(function(e) {
+          console.log("Kon muziek niet starten:", e.message);
+        });
+      }
+
+      function pauseMusic() {
+        fadeOut(function() {
+          musicBtn.textContent = "🔇";
+          musicBtn.classList.remove("playing");
+        });
+        userPaused = true;
+      }
 
       function toggleMusic() {
-        if(music.paused){
-          music.play().then(() => {
-            musicBtn.textContent = "🔊"; // Icoon luidspreker aan
-            musicBtn.classList.add("playing");
-            musicStarted = true;
-          }).catch(e => {
-            console.log("Kon muziek niet starten (gebruikersinteractie nodig)");
-          });
+        if(music.paused) {
+          playMusic();
         } else {
-          music.pause();
-          musicBtn.textContent = "🔇"; // Icoon luidspreker uit
-          musicBtn.classList.remove("playing");
+          pauseMusic();
         }
       }
 
-      // Knopje rechtsboven
-      musicBtn.onclick = function(e){
+      // Muziek knop click
+      musicBtn.onclick = function(e) {
         e.stopPropagation();
         toggleMusic();
       };
 
-      // Create dots
-      for(var i=0;i<total;i++){
-        var dot=document.createElement("button");
-        dot.className="dot"+(i===0?" active":"");
-        dot.dataset.index=i;
-        dot.onclick=function(){goTo(parseInt(this.dataset.index))};
+      // === NAVIGATIE DOTS ===
+      for(var i = 0; i < total; i++) {
+        var dot = document.createElement("button");
+        dot.className = "dot" + (i === 0 ? " active" : "");
+        dot.dataset.index = i;
+        dot.onclick = function(e) {
+          e.stopPropagation();
+          goTo(parseInt(this.dataset.index));
+        };
         dots.appendChild(dot);
       }
       
-      function update(){
-        slides.forEach(function(s,i){s.classList.toggle("active",i===current)});
-        document.querySelectorAll(".dot").forEach(function(d,i){d.classList.toggle("active",i===current)});
-        progress.style.width=((current+1)/total*100)+"%";
-        counter.textContent=(current+1)+" / "+total;
-        prevBtn.style.display=current>0?"flex":"none";
-        nextBtn.style.display=current<total-1?"flex":"none";
+      // === UPDATE FUNCTIE ===
+      function update() {
+        slides.forEach(function(s, i) {
+          s.classList.toggle("active", i === current);
+        });
+        document.querySelectorAll(".dot").forEach(function(d, i) {
+          d.classList.toggle("active", i === current);
+        });
+        progress.style.width = ((current + 1) / total * 100) + "%";
+        counter.textContent = (current + 1) + " / " + total;
+        prevBtn.style.display = current > 0 ? "flex" : "none";
+        nextBtn.style.display = current < total - 1 ? "flex" : "none";
       }
       
-      function goTo(n){if(n>=0&&n<total){current=n;update()}}
+      // === NAVIGATIE FUNCTIES ===
+      function goTo(n) {
+        if(n >= 0 && n < total) {
+          current = n;
+          update();
+        }
+      }
       
-      function next(){
-        // Start muziek bij de eerste keer klikken/swipen
-        if(!musicStarted) { toggleMusic(); } 
+      function next() {
+        // Start muziek bij eerste interactie (tenzij gebruiker het heeft uitgezet)
+        if(!musicStarted && !userPaused) {
+          playMusic();
+        }
         
-        if(current<total-1){current++;update()}
+        if(current < total - 1) {
+          current++;
+          update();
+        }
       }
-      function prev(){if(current>0){current--;update()}}
       
-      screen.onclick=function(e){if(!e.target.closest(".nav-btn")&&!e.target.closest(".dot")&&!e.target.closest(".music-btn"))next()};
-      prevBtn.onclick=function(e){e.stopPropagation();prev()};
-      nextBtn.onclick=function(e){e.stopPropagation();next()};
+      function prev() {
+        if(current > 0) {
+          current--;
+          update();
+        }
+      }
       
-      document.onkeydown=function(e){
-        if(e.key==="ArrowRight"||e.key===" ")next();
-        else if(e.key==="ArrowLeft")prev();
+      // === EVENT LISTENERS ===
+      
+      // Klik op scherm
+      screen.onclick = function(e) {
+        if(!e.target.closest(".nav-btn") && 
+           !e.target.closest(".dot") && 
+           !e.target.closest(".music-btn")) {
+          next();
+        }
       };
       
-      screen.ontouchstart=function(e){touchStartX=e.changedTouches[0].screenX};
-      screen.ontouchend=function(e){
-        touchEndX=e.changedTouches[0].screenX;
-        if(touchStartX-touchEndX>50)next();
-        else if(touchEndX-touchStartX>50)prev();
+      // Navigatie knoppen
+      prevBtn.onclick = function(e) {
+        e.stopPropagation();
+        prev();
       };
       
+      nextBtn.onclick = function(e) {
+        e.stopPropagation();
+        next();
+      };
+      
+      // Keyboard navigatie
+      document.onkeydown = function(e) {
+        if(e.key === "ArrowRight" || e.key === " ") {
+          e.preventDefault();
+          next();
+        } else if(e.key === "ArrowLeft") {
+          e.preventDefault();
+          prev();
+        } else if(e.key === "m" || e.key === "M") {
+          // M toets voor muziek toggle
+          toggleMusic();
+        }
+      };
+      
+      // Touch/swipe support
+      screen.ontouchstart = function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+      };
+      
+      screen.ontouchend = function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        var diff = touchStartX - touchEndX;
+        if(diff > 50) {
+          next();  // Swipe links = volgende
+        } else if(diff < -50) {
+          prev();  // Swipe rechts = vorige
+        }
+      };
+      
+      // Initialiseer
       update();
     })();
   </script>
