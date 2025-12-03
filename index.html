@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSINT Wrapped 2025</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#030712;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;overflow:hidden}
+    .phone{background:#000;border-radius:2rem;padding:0.5rem;max-width:24rem;width:100%;box-shadow:0 25px 50px -12px rgba(0,0,0,.5)}
+    .screen{height:600px;border-radius:1.5rem;overflow:hidden;position:relative;cursor:pointer}
+    .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;opacity:0;transition:opacity .5s}
+    .slide.active{opacity:1}
+    
+    /* Achtergrond Gradients */
+    .bg0,.bg6{background:linear-gradient(to bottom right,#0f172a,#1e3a5f,#0f172a)}
+    .bg1{background:linear-gradient(to bottom right,#0f172a,#312e81,#0f172a)}
+    .bg2{background:linear-gradient(to bottom right,#0f172a,#064e3b,#0f172a)}
+    .bg3{background:linear-gradient(to bottom right,#0f172a,#78350f,#0f172a)}
+    .bg4{background:linear-gradient(to bottom right,#0f172a,#831843,#0f172a)}
+    .bg5{background:linear-gradient(to bottom right,#0f172a,#164e63,#0f172a)}
+
+    /* Aangepast: Plaatje is nu een extern bestand, geen base64 meer */
+    .owl{width:8rem;height:8rem;margin-bottom:1rem;object-fit: contain; border-radius: 1rem;}
+    .owl.float{animation:float 3s ease-in-out infinite}
+    
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+    @keyframes scan{0%{border-color: #818cf8} 50%{border-color: #fff} 100%{border-color: #818cf8}}
+
+    .title{font-size:2rem;font-weight:900;color:#fff;margin-bottom:1rem}
+    .year{font-size:4rem;font-weight:900;background:linear-gradient(to right,#fbbf24,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .subtitle{color:#93c5fd;font-style:italic;font-size:1.1rem}
+    .hint{color:rgba(96,165,250,.5);font-size:.875rem;position:absolute;bottom:3rem;animation:pulse 2s ease-in-out infinite}
+    .big-number{font-size:8rem;font-weight:900;color:#fff}
+    .label{color:#a5b4fc;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+    
+    /* Nieuwe stijl voor Slide 1 (OSINT 7) */
+    .avatars{display:flex;gap:.5rem;margin:1.5rem 0; flex-wrap: wrap; justify-content: center; max-width: 18rem;}
+    .avatar{width:3.5rem;height:3.5rem;border-radius:50%;background:rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid #818cf8; animation: scan 3s infinite;}
+    
+    .team-name{font-size:1.5rem;font-weight:900;background:linear-gradient(to right,#a5b4fc,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .card{background:rgba(255,255,255,.05);border-radius:.75rem;padding:1rem;border:1px solid rgba(16,185,129,.2);text-align:left;display:flex;align-items:center;gap:1rem;margin-bottom:.75rem;width:100%;max-width:20rem}
+    .card-amber{border-color:rgba(245,158,11,.3)}
+    .card-pink{border-color:rgba(236,72,153,.2)}
+    .card-cyan{border-color:rgba(6,182,212,.3)}
+    .emoji{font-size:1.5rem;flex-shrink:0}
+    .card-title{color:#fff;font-weight:700;font-size:.9rem}
+    .card-sub{color:rgba(16,185,129,.6);font-size:.7rem}
+    .card-sub-amber{color:rgba(252,211,77,.6)}
+    .card-sub-pink{color:rgba(244,114,182,.6)}
+    .card-sub-cyan{color:rgba(103,232,249,.8)}
+    .case-img{width:100%;height:8rem;object-fit:cover;border-radius:.5rem;opacity:.8;border:1px solid rgba(245,158,11,.2)}
+    .case-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);border-radius:.5rem}
+    .case-loc{position:absolute;bottom:.5rem;left:.5rem;color:#fff;font-size:.7rem;font-weight:700}
+    .case-wrap{position:relative;margin-bottom:.75rem;border-radius:.5rem;overflow:hidden}
+    .rank{font-size:1.25rem;font-weight:900;color:#ec4899;width:2rem}
+    .rank-2{color:rgba(236,72,153,.8)}
+    .rank-3{color:rgba(236,72,153,.6)}
+    .platform-icon{width:3rem;height:3rem;border-radius:.75rem;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+    .ig-icon{background:linear-gradient(to bottom right,#a855f7,#ec4899,#f97316)}
+    .x-icon{background:#000;color:#fff;font-weight:700}
+    .tt-icon{background:linear-gradient(to bottom right,#22d3ee,#ec4899,#ef4444)}
+    .terminal{background:rgba(30,41,59,.8);border-radius:.75rem;padding:1rem;font-family:monospace;text-align:left;max-width:20rem;border:1px solid rgba(6,182,212,.3);margin-bottom:1rem}
+    .term-line{color:#22d3ee;font-size:.75rem;margin-bottom:.25rem}
+    .term-error{color:#f87171;font-weight:700;font-size:.75rem;margin-top:.5rem}
+    .quote{color:#fff;font-size:1.1rem;font-weight:900;margin-bottom:.25rem}
+    .quote-attr{color:rgba(103,232,249,.6);font-size:.875rem;font-style:italic;margin-bottom:1rem}
+    .divider{width:6rem;height:2px;background:linear-gradient(to right,transparent,#60a5fa,transparent);margin:1rem 0}
+    .tagline{color:#bfdbfe;font-style:italic;font-size:1.1rem}
+    .closing-sub{color:rgba(147,197,253,.4);font-size:.875rem;margin-top:1rem}
+    .xmas{display:flex;align-items:center;gap:.5rem;margin-top:1rem}
+    .xmas-text{color:rgba(191,219,254,.6);font-size:.875rem}
+    .progress{position:absolute;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.1)}
+    .progress-bar{height:100%;background:rgba(255,255,255,.5);transition:width .3s}
+    .dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.375rem}
+    .dot{width:.5rem;height:.5rem;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;padding:0;transition:all .3s}
+    .dot.active{background:#fff;width:1.5rem}
+    .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .nav-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+    .nav-prev{left:.5rem}
+    .nav-next{right:.5rem}
+    .info{text-align:center;margin-top:1rem;color:#6b7280;font-size:.875rem}
+    .highlight-card{background:rgba(255,255,255,.1)}
+    
+    /* Nieuw: Muziek knop */
+    .music-btn {position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; border: none; cursor: pointer; z-index: 10; opacity: 0.5;}
+    .music-btn.playing {opacity: 1; animation: pulse 1s infinite;}
+  </style>
+</head>
+<body>
+  
+  <audio id="bgMusic" loop>
+    <source src="kerst.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="phone">
+    <div class="screen" id="screen">
+      <button id="musicToggle" class="music-btn">🔇</button>
+
+      <div class="slide bg0 active" data-slide="0">
+        <img src="plaatje.jpg" class="owl float" alt="OSINT Logo">
+        <h1 class="title">OSINT WRAPPED</h1>
+        <div class="year">2025</div>
+        <p class="subtitle">Jouw jaar in data.</p>
+        <p style="color:rgba(147,197,253,.6);font-size:.875rem;margin-top:.5rem">(Of eigenlijk: ons jaar in andermans data.)</p>
+        <div class="hint">Tap om te starten (en de muziek te starten) →</div>
+      </div>
+      
+      <div class="slide bg1" data-slide="1">
+        <p class="label">Dit jaar werkten</p>
+        <div class="big-number">7</div>
+        <p class="label">specialisten, elk met hun eigen kracht</p>
+        <div class="avatars">
+          <div class="avatar" title="Geo/Maps">🌍</div>
+          <div class="avatar" title="Cyber/Darkweb">💻</div>
+          <div class="avatar" title="Locatie">📍</div>
+          <div class="avatar" title="Recherche">🔍</div>
+          <div class="avatar" title="Tech/Data">📡</div>
+          <div class="avatar" title="Financieel/Crypto">💸</div>
+          <div class="avatar" title="HUMINT/SocEng">🕵️‍♂️</div>
+        </div>
+        <h2 class="team-name">THE OSINT SEVEN</h2>
+        <p style="color:rgba(129,140,248,.6);font-size:.7rem;margin-top:1rem">7 Specialismen • 1 Missie</p>
+      </div>
+      
+      <div class="slide bg2" data-slide="2">
+        <p class="label" style="color:#6ee7b7">2025 was groot</p>
+        <h2 style="font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:1.5rem">Jullie highlights</h2>
+        <div class="card"><div class="emoji">🌍</div><div><p class="card-title">NAVO TOP 2025</p><p class="card-sub">De wereld keek toe. Wij keken mee.</p></div></div>
+        <div class="card"><div class="emoji">🕯️</div><div><p class="card-title">VOOR LISA</p><p class="card-sub">Sommige zaken vergeet je nooit.</p></div></div>
+        <div class="card"><div class="emoji">🚩</div><div><p class="card-title">DEMONSTRATIES</p><p class="card-sub">Wanneer de straat spreekt, luisteren wij.</p></div></div>
+      </div>
+      
+      <div class="slide bg3" data-slide="3">
+        <div style="font-size:2rem;margin-bottom:.5rem">⚡</div>
+        <p class="label" style="color:#fcd34d">Snelste hit van 2025</p>
+        <div class="card card-amber" style="flex-direction:column;align-items:stretch;padding:1rem">
+          <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+            <div class="platform-icon ig-icon">📸</div>
+            <div style="text-align:left"><p class="card-title">Instagram</p><p class="card-sub-amber">Eén foto. Eén detail. Eén treffer.</p></div>
+          </div>
+          <div class="case-wrap">
+            <img src="casus.jpg" class="case-img" alt="Casus foto" onerror="this.style.display='none';this.parentNode.innerHTML='<div style=\'width:100%;height:8rem;background:#333;border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#666\'>Plaats casus.jpg</div>'">
+            <div class="case-overlay"></div>
+            <p class="case-loc">📍 Amsterdam</p>
+          </div>
+          <div style="text-align:center"><div style="font-size:1.5rem">🎯</div><p class="card-title">Van post naar aanhouding</p></div>
+        </div>
+        <p style="color:rgba(252,211,77,.8);font-size:.75rem;font-style:italic">"Soms zit het antwoord in een pixel."</p>
+      </div>
+      
+      <div class="slide bg4" data-slide="4">
+        <p class="label" style="color:#f9a8d4">Jullie waren het meest te vinden op</p>
+        <h2 style="font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:1.5rem">TOP PLATFORMS</h2>
+        <div class="card card-pink highlight-card"><div class="rank">#1</div><div class="platform-icon ig-icon">📸</div><div style="text-align:left"><p class="card-title">Instagram</p><p class="card-sub-pink">"Waar ego's zichzelf verraden"</p></div></div>
+        <div class="card card-pink"><div class="rank rank-2">#2</div><div class="platform-icon x-icon">X</div><div style="text-align:left"><p class="card-title">X / Twitter</p><p class="card-sub-pink">"Chaos, maar bruikbare chaos"</p></div></div>
+        <div class="card card-pink"><div class="rank rank-3">#3</div><div class="platform-icon tt-icon">🎵</div><div style="text-align:left"><p class="card-title">TikTok</p><p class="card-sub-pink">"60 seconden, eindeloze intel"</p></div></div>
+      </div>
+      
+      <div class="slide bg5" data-slide="5">
+        <div style="font-size:3rem;margin-bottom:1rem">🤖</div>
+        <div class="terminal">
+          <p class="term-line">> Analyseren OSINT team...</p>
+          <p class="term-line">> Vervangingsmogelijkheden zoeken...</p>
+          <p class="term-error">❌ ERROR: MENSELIJKE INTUÏTIE</p>
+          <p class="term-error" style="padding-left:1rem">NIET REPLICEERBAAR</p>
+        </div>
+        <p class="quote">"AI GAAT ONS VERVANGEN"</p>
+        <p class="quote-attr">— Niemand ooit</p>
+        <div class="card card-cyan" style="flex-direction:column;align-items:flex-start;max-width:16rem">
+          <p class="card-sub-cyan">Deze infographic: <span style="color:#22d3ee">gemaakt door AI</span></p>
+          <p class="card-sub-cyan">De analyses: <span style="color:#fff;font-weight:700">gemaakt door mensen</span></p>
+          <p class="card-sub-cyan" style="margin-top:.5rem">Het verschil: intuïtie, koffie & wantrouwen ☕</p>
+        </div>
+      </div>
+      
+      <div class="slide bg6" data-slide="6">
+        <img src="plaatje.jpg" class="owl" style="width:5rem;height:5rem" alt="OSINT Logo">
+        <p class="label" style="color:rgba(147,197,253,.6)">Politie Amsterdam</p>
+        <h1 style="font-size:1.75rem;font-weight:900;color:#fff;margin-bottom:.5rem">OSINT TEAM</h1>
+        <div class="year" style="font-size:2rem;margin-bottom:1rem">WRAPPED 2025</div>
+        <div class="divider"></div>
+        <p class="tagline">"Wij zien wat anderen missen."</p>
+        <p class="closing-sub">Terwijl Amsterdam slaapt... waken wij.</p>
+        <div class="xmas">
+          <span>🎄</span>
+          <p class="xmas-text">Fijne feestdagen van The OSINT Seven</p>
+          <span>🎄</span>
+        </div>
+      </div>
+      
+      <div class="progress"><div class="progress-bar" id="progress"></div></div>
+      <div class="dots" id="dots"></div>
+      <button class="nav-btn nav-prev" id="prev" style="display:none">←</button>
+      <button class="nav-btn nav-next" id="next">→</button>
+    </div>
+  </div>
+  <div class="info">
+    <p id="counter">1 / 7</p>
+    <p style="font-size:.75rem;color:#4b5563">← → pijltjestoetsen of swipe</p>
+  </div>
+  
+  <script>
+    (function(){
+      var current=0,total=7;
+      var screen=document.getElementById("screen");
+      var slides=document.querySelectorAll(".slide");
+      var progress=document.getElementById("progress");
+      var counter=document.getElementById("counter");
+      var dots=document.getElementById("dots");
+      var prevBtn=document.getElementById("prev");
+      var nextBtn=document.getElementById("next");
+      var touchStartX=0,touchEndX=0;
+      
+      // Nieuw: Muziek logica
+      var music = document.getElementById("bgMusic");
+      var musicBtn = document.getElementById("musicToggle");
+      var musicStarted = false;
+
+      function toggleMusic() {
+        if(music.paused){
+          // Probeer af te spelen
+          music.play().then(() => {
+            musicBtn.textContent = "🔊"; // Icoon luidspreker aan
+            musicBtn.classList.add("playing");
+            musicStarted = true;
+          }).catch(e => {
+            console.log("Kon muziek niet starten (gebruikersinteractie nodig)");
+          });
+        } else {
+          music.pause();
+          musicBtn.textContent = "🔇"; // Icoon luidspreker uit
+          musicBtn.classList.remove("playing");
+        }
+      }
+
+      // Knopje rechtsboven
+      musicBtn.onclick = function(e){
+        e.stopPropagation(); // Voorkom dat we ook naar de volgende slide gaan
+        toggleMusic();
+      };
+
+      // Create dots
+      for(var i=0;i<total;i++){
+        var dot=document.createElement("button");
+        dot.className="dot"+(i===0?" active":"");
+        dot.dataset.index=i;
+        dot.onclick=function(){goTo(parseInt(this.dataset.index))};
+        dots.appendChild(dot);
+      }
+      
+      function update(){
+        slides.forEach(function(s,i){s.classList.toggle("active",i===current)});
+        document.querySelectorAll(".dot").forEach(function(d,i){d.classList.toggle("active",i===current)});
+        progress.style.width=((current+1)/total*100)+"%";
+        counter.textContent=(current+1)+" / "+total;
+        prevBtn.style.display=current>0?"flex":"none";
+        nextBtn.style.display=current<total-1?"flex":"none";
+      }
+      
+      function goTo(n){if(n>=0&&n<total){current=n;update()}}
+      function next(){
+        // Nieuw: Start muziek bij de eerste keer klikken/swipen
+        if(!musicStarted) { toggleMusic(); } 
+        
+        if(current<total-1){current++;update()}
+      }
+      function prev(){if(current>0){current--;update()}}
+      
+      screen.onclick=function(e){if(!e.target.closest(".nav-btn")&&!e.target.closest(".dot")&&!e.target.closest(".music-btn"))next()};
+      prevBtn.onclick=function(e){e.stopPropagation();prev()};
+      nextBtn.onclick=function(e){e.stopPropagation();next()};
+      
+      document.onkeydown=function(e){
+        if(e.key==="ArrowRight"||e.key===" ")next();
+        else if(e.key==="ArrowLeft")prev();
+      };
+      
+      screen.ontouchstart=function(e){touchStartX=e.changedTouches[0].screenX};
+      screen.ontouchend=function(e){
+        touchEndX=e.changedTouches[0].screenX;
+        if(touchStartX-touchEndX>50)next();
+        else if(touchEndX-touchStartX>50)prev();
+      };
+      
+      update();
+    })();
+  </script>
+</body>
+</html>
